@@ -27,7 +27,7 @@ def getHttp(hostname, path):
     sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sck.connect((hostname, 80))
     ssck = StreamSocket(sck)
-    getRequest = 'GET {0} HTTP/1.1\r\nHost: {1}\r\n\r\n'.format(path, hostname)
+    getRequest = 'GET {0} HTTP/1.1\r\nHost: {1}\r\n Connection: keep-alive \r\n'.format(path, hostname)
     print(getRequest)
     ssck.send(getRequest.encode('utf-8'))
     rawRes = ssck.recv()

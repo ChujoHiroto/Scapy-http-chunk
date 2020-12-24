@@ -23,7 +23,7 @@ def ignoreHexLine(buf):
 
 
 def getHttp(ssck, hostname, path):
-    getRequest = 'GET {0} HTTP/1.1\r\nHost: {1}\r\n\r\n'.format(path, hostname)
+    getRequest = 'GET {0} HTTP/1.1\r\nHost: {1}\r\nConnection: keep-alive\r\n\r\n'.format(path, hostname)
     print(getRequest)
     ssck.send(getRequest.encode('utf-8'))
     rawRes = ssck.recv()
@@ -104,7 +104,10 @@ ssck = StreamSocket(sck)
 body = getHttp(ssck, request_hostname, request_path)
 parser = AHREFParser()
 parser.feed(body)
+count = 0
 for link in parser.urls:
+    print(str(count) + " / " + str(len(parser.urls)))
+    count += 1
     if not link.startswith('http://') and not link.startswith('https://'):
         getHttp(ssck, request_hostname, "/" + link)
 
